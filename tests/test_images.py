@@ -70,8 +70,8 @@ class ImageTests(PRAWTest):
     def test_upload_invalid_image_path(self):
         self.assertRaises(IOError, self.subreddit.upload_image, 'bar.png')
 
+    @betamax(preserve_exact_body_bytes=True)
     def test_upload_jpg_header(self):
-        self.betamax_init()
         image = self.image_path.format('white-square.jpg')
         self.assertTrue(self.subreddit.upload_image(image, header=True))
 
