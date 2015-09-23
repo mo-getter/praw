@@ -661,7 +661,7 @@ class OAuth2Reddit(BaseReddit):
         return retval
 
     @decorators.require_oauth
-    def get_access_information(self, code):
+    def get_access_information(self, code=None):
         """Return the access information for an OAuth2 authorization grant.
 
         :param code: the code received in the request from the OAuth2 server
@@ -1298,7 +1298,7 @@ class AuthenticatedReddit(OAuth2Reddit, UnauthenticatedReddit):
                                                page.lower()))
         return self.request_json(self.config['wiki_edit'], data=data)
 
-    def get_access_information(self, code,  # pylint: disable=W0221
+    def get_access_information(self, code=None,  # pylint: disable=W0221
                                update_session=True):
         """Return the access information for an OAuth2 authorization grant.
 
