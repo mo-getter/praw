@@ -226,6 +226,7 @@ class Config(object):  # pylint: disable=R0903
         self.oauth_url = ('https://' if config_boolean(obj['oauth_https'])
                           else 'http://') + obj['oauth_domain']
         self.api_request_delay = float(obj['api_request_delay'])
+        self.app_only_oauth = config_boolean(obj.get('oauth_app_only'))
         self.by_kind = {obj['comment_kind']:    objects.Comment,
                         obj['message_kind']:    objects.Message,
                         obj['redditor_kind']:   objects.Redditor,
@@ -670,8 +671,11 @@ class OAuth2Reddit(BaseReddit):
             value will be a set containing the scopes the tokens are valid for.
 
         """
-        data = {'code': code, 'grant_type': 'authorization_code',
-                'redirect_uri': self.redirect_uri}
+        if self.app_only_oauth:
+            data = {'grant_type': 'client_credentials'}
+        else:
+            data = {'code': code, 'grant_type': 'authorization_code',
+                    'redirect_uri': self.redirect_uri}
         retval = self._handle_oauth_request(data)
         return {'access_token': retval['access_token'],
                 'refresh_token': retval.get('refresh_token'),
