@@ -671,7 +671,7 @@ class OAuth2Reddit(BaseReddit):
             value will be a set containing the scopes the tokens are valid for.
 
         """
-        if self.app_only_oauth:
+        if self.config.app_only_oauth:
             data = {'grant_type': 'client_credentials'}
         else:
             data = {'code': code, 'grant_type': 'authorization_code',
